@@ -27,6 +27,7 @@ Function Invoke-AnkhSave {
   BEGIN {
     Write-Host $banner -f Blue
 
+    $startTime = Get-Date
     $day, $time = ((Get-Date -format 'u') -split ' ')
     $copiedFiles, $errors = 0
 
@@ -44,9 +45,7 @@ Function Invoke-AnkhSave {
 
           # Saving files to given location
           foreach ($file in $files) {
-            # Progress
-            $percent = [math]::Round($files.IndexOf($file) / $Locations.length * 100, 2)
-            Write-Progress -Activity "Saving files to $($save.destination)..." -Status "$percent% completed..." -CurrentOperation "Saving $($file.name)" -PercentComplete $percent
+            Write-Host "Saving $($files.length) file(s) to $($save.destination)..."
 
             # Copy file to destination
             $copied = Copy-File -File $file -Destination $save.destination -Suffix "_$($day.Replace('-', ''))" -Overwrite
@@ -61,6 +60,7 @@ Function Invoke-AnkhSave {
   }
 
   END {
+    $endTime = Get-Date
     Write-Host "Saving took $(Get-TimeDiff $startTime $endTime)"
     Write-Host "$copiedFiles were copied; $errors errors occured !"
   }
