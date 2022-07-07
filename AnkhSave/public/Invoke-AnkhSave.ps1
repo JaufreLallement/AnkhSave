@@ -30,7 +30,7 @@ Function Invoke-AnkhSave {
     $day, $time = ((Get-Date -format 'u') -split ' ')
     $copiedFiles, $errors = 0
 
-    Write-Host "Copying files from $($Locations.length) directories..." -f DarkYellow
+    Write-Host "Copying files from $($Locations.length) directories..."
   }
 
   PROCESS {
@@ -61,17 +61,7 @@ Function Invoke-AnkhSave {
   }
 
   END {
-    if (($errors -gt 0) -and ($copiedFiles -gt 0)) {
-      Write-Host "$copiedFiles passed to the Field of Reeds; $errors files were sent to the Duat !" -f DarkYellow
-    } elseif ($errors -eq 0) {
-      Write-Host "All files ($copiedFiles) passed to the Field of Reeds !" -f Green
-    } else {
-      Write-Host "All files were sent to the Duat !" -f Red
-    }
-
-    Write-Host @"
-  =================================================
-                  Judgement is done
-"@
+    Write-Host "Saving took $(Get-TimeDiff $startTime $endTime)"
+    Write-Host "$copiedFiles were copied; $errors errors occured !"
   }
 }
